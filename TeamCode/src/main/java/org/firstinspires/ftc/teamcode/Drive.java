@@ -68,10 +68,19 @@ public class Drive extends LinearOpMode {
             double frontRightPower = (rotY - rotX - rx) / denominator;
             double backRightPower = (rotY + rotX - rx) / denominator;
 
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
+            double speedMultiplier = 1.0; // Default power level
+            if (gamepad1.right_bumper) {
+                speedMultiplier = 1.5; // Increase speed when the right bumper is pressed
+            }
+
+
+            // Apply speed multiplier to motor powers
+            frontLeftMotor.setPower(frontLeftPower * speedMultiplier);
+            backLeftMotor.setPower(backLeftPower * speedMultiplier);
+            frontRightMotor.setPower(frontRightPower * speedMultiplier);
+            backRightMotor.setPower(backRightPower * speedMultiplier);
+
+
         }
     }
 }

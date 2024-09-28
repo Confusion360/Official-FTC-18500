@@ -1,5 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,14 +21,14 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp
-public class General extends LinearOpMode {
+public class General2024 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //position for the slide max and min, idk the max value check that with someone
         int SLIDE_MIN_POSITION = 0;
         //I calculated revolutions using circumference and slide height change
         //I calculated tics per revolution by PPR
-        int SLIDE_MAX_POSITION = 2250;
+        int SLIDE_MAX_POSITION = -5600;
 
         // Declare our motors
         // Make sure your ID's match your configuration
@@ -27,11 +38,11 @@ public class General extends LinearOpMode {
         DcMotor backRightMotor = hardwareMap.dcMotor.get("br");
 
         // Motor for linear slide
-        DcMotor slideMotor = hardwareMap.dcMotor.get("slide");
+        DcMotor horizontalSlides = hardwareMap.dcMotor.get("hslide");
 
         //servo for claw
-        Servo claw_l = hardwareMap.servo.get("cl");
-        Servo claw_r = hardwareMap.servo.get("cr");
+        Servo intakeServo = hardwareMap.servo.get("intakeservo");
+        Servo intakeHinge = hardwareMap.servo.get("intakehinge");
 
         Servo claw_tilt = hardwareMap.servo.get("ctilt");
 
@@ -43,11 +54,11 @@ public class General extends LinearOpMode {
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Reset the motor encoder so that it reads zero ticks
-        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        horizontalSlides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Sets the starting position of the arm to the down position
-        slideMotor.setTargetPosition(SLIDE_MIN_POSITION);
-        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        horizontalSlides.setTargetPosition(SLIDE_MIN_POSITION);
+        horizontalSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -64,8 +75,8 @@ public class General extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            claw_r.setPosition(1);
-            claw_l.setPosition(0);
+            intakeServo.setPosition(1);
+            intakeHinge.setPosition(0);
             //ground position is right
             claw_tilt.setPosition(1);
 
@@ -102,41 +113,46 @@ public class General extends LinearOpMode {
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
 
-            // If the A button is pressed, raise the arm
+            // If the A button is pressed, intake spins inwards
             if (gamepad1.right_bumper) {
-                slideMotor.setTargetPosition(SLIDE_MAX_POSITION);
-                slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                slideMotor.setPower(0.5);
+                horizontalSlides.setTargetPosition(SLIDE_MAX_POSITION);
+                horizontalSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                horizontalSlides.setPower(0.5);
             }
 
             // If the B button is pressed, lower the arm
             if (gamepad1.left_bumper) {
-                slideMotor.setTargetPosition(SLIDE_MIN_POSITION);
-                slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                slideMotor.setPower(0.5);
+                horizontalSlides.setTargetPosition(SLIDE_MIN_POSITION);
+                horizontalSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                horizontalSlides.setPower(0.5);
             }
 
-            if (gamepad1.a && claw_l.getPosition() == 0){
-                claw_r.setPosition(0);
-                claw_l.setPosition(1);
-            } else if (gamepad1.a && claw_l.getPosition() == 1) {
-                claw_r.setPosition(1);
-                claw_l.setPosition(0);
+            if (gamepad1.a && intakeHinge.getPosition() == 0){
+                intakeHinge.setPosition(1);
+            } else if (gamepad1.a && intakeHinge.getPosition() == 1) {
+                intakeHinge.setPosition(0);
             }
 
-            if (gamepad1.b){
-                claw_tilt.setPosition(1);
+            if (gamepad1.b && intakeServo.getPosition() == 0 || intakeServo.getPosition() == 1.5){
+                // turns inwards
+                intakeServo.setPosition(1);
+            }else if (gamepad1.b && intakeServo.getPosition() == 1){
+                // stops turning
+                intakeServo.setPosition(0.5);
+            }else if (gamepad1.x && intakeServo.getPosition() == 1 || intakeServo.getPosition() == 1.5){
+                // turns outwards
+                intakeServo.setPosition(0);
+            }else if (gamepad1.x && intakeServo.getPosition() == 0){
+                // stops turning
+                intakeServo.setPosition(0.5);
             }
-            if (gamepad1.x){
-                //this value will probs have to change i have programmed this servo yet
-                claw_tilt.setPosition(0);
-            }
+
 
             // Get the current position of the armMotor
-            double position = slideMotor.getCurrentPosition();
+            double position = horizontalSlides.getCurrentPosition();
 
             // Get the target position of the armMotor
-            double desiredPosition = slideMotor.getTargetPosition();
+            double desiredPosition = horizontalSlides.getTargetPosition();
 
             // Show the position of the armMotor on telemetry
             telemetry.addData("Encoder Position", position);
