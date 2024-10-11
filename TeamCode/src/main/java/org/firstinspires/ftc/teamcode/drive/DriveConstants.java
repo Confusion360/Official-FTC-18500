@@ -65,16 +65,16 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 30;
-    public static double MAX_ACCEL = 30;
-    public static double MAX_ANG_VEL = Math.toRadians(60);
-    public static double MAX_ANG_ACCEL = Math.toRadians(60);
+    public static double MAX_VEL = 14.7;          // this is only 80% of the real value it is recommended not to use 100%, which for us with our 5203s is 18.37 in/s
+    public static double MAX_ACCEL = 30;          // we need to do some experimentation to find the true value of this
+    public static double MAX_ANG_VEL = Math.toRadians(60);              // to be set
+    public static double MAX_ANG_ACCEL = Math.toRadians(60);            // to be set
 
     /*
      * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
      */
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.UP;
+            RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
             RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
