@@ -18,19 +18,24 @@ public class HorizontalSlides extends SubsystemBase {
 	private final Servo leftServo;
 	double rightOffset = 0.0;
 
+	//preset positions
+	double armUp;
+	double armForward;
+	double armBack;
+
 	public HorizontalSlides (final HardwareMap hMap, final String rServoName, final String lServoName) {
 		rightServo = hMap.get(Servo.class, rServoName);
 		leftServo = hMap.get(Servo.class, lServoName);
-
 	}
 
-	public void move(double pos) {
+	public void move(double pos) {	//move to position with preset offset
 		rightServo.setPosition(pos + rightOffset);
 		leftServo.setPosition(1-pos);
 	}
 
-	public void move(double pos, double offset) {
+	public void move(double pos, double offset) {	//move to position with offset you can choose (for testing with @Config)
 		rightServo.setPosition(pos + offset);
 		leftServo.setPosition(1-pos);
 	}
+
 }

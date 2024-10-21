@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.subsystems.HorizontalSlides;
+import org.firstinspires.ftc.teamcode.subsystems.VerticalSlides;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
@@ -28,14 +29,6 @@ public class General extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        //position for the slide max and min, idk the max value check that with someone
-        int SLIDE_MIN_POSITION = 0;
-        //I calculated revolutions using circumference and slide height change
-        //I calculated tics per revolution by PPR
-        int SLIDE_MAX_POSITION = 2250;
-
-        // Motor for linear slide
-        DcMotor slideMotor = hardwareMap.dcMotor.get("slide");
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -47,14 +40,14 @@ public class General extends LinearOpMode {
         imu.initialize(parameters);
 
         //subsystems
-        ArmSystem arm = new ArmSystem(hardwareMap, "al", "ar", "claw");
+        ArmSystem arm = new ArmSystem(hardwareMap, "al", "ar", "claw", "clawrotate");
         DriveTrain dt = new DriveTrain(imu, gamepad1, hardwareMap, "br", "bl", "fr", "fl");
         HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l");
+        VerticalSlides vSlides = new VerticalSlides(hardwareMap, "slide");
 
         // set start position of stuff
         arm.moveArm(armPos);    //change if not config
         hSlides.move(slideServoPos, slideServoOffset);
-
 
         waitForStart();
 
@@ -64,39 +57,23 @@ public class General extends LinearOpMode {
 
             arm.moveArm(armPos);    //change if not config
             dt.update();
-
             hSlides.move(slideServoPos, slideServoOffset);
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();
             }
 
-            // If the A button is pressed, raise the arm
-            if (gamepad1.right_bumper) {
-                slideMotor.setTargetPosition(SLIDE_MAX_POSITION);
-                slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                slideMotor.setPower(0.5);
+            if (gamepad1.right_bumper) {    // If the A button is pressed, raise the arm
+                vSlides.extend();
             }
 
-            // If the B button is pressed, lower the arm
-            if (gamepad1.left_bumper) {
-                slideMotor.setTargetPosition(SLIDE_MIN_POSITION);
-                slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                slideMotor.setPower(0.5);
+            if (gamepad1.left_bumper) {     // If the B button is pressed, lower the arm
+                vSlides.reduce();
             }
 
-
-            // Get the current position of the armMotor
-            double position = slideMotor.getCurrentPosition();
-
-            // Get the target position of the armMotor
-            double desiredPosition = slideMotor.getTargetPosition();
-
-            // Show the position of the armMotor on telemetry
-            telemetry.addData("Encoder Position", position);
-
-            // Show the target position of the armMotor on telemetry
-            telemetry.addData("Desired Position", desiredPosition);
+            // Show the current and target positions of the vertical slides on telemetry
+            telemetry.addData("Encoder Position", vSlides.getCurrentPos());
+            telemetry.addData("Desired Position", vSlides.getCurrentPos());
 
             telemetry.update();
         }
