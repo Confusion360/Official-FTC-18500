@@ -13,6 +13,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
+/*
+* DriveTrain.java Summary
+* - DriveTrain - constructor
+* - update - checks inputs, does all the calculations and movement stuff
+* */
+
 public class DriveTrain extends SubsystemBase {
 
 	private final DcMotor backRight;

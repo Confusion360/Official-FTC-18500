@@ -1,0 +1,54 @@
+package org.firstinspires.ftc.teamcode.subsystems;
+
+import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+/*
+* Arm.java Summary
+* ArmSystem - constructor
+* grab - closes claw
+* release - opens claw
+* moveArm - move arm to specified location
+* */
+
+public class Arm extends SubsystemBase{
+
+	private final Servo arm_l;
+	private final Servo arm_r;
+	//private final Servo claw;
+	//private final Servo claw_rotate;
+
+	double armServoOffset = -0.04;	//fixing misaligned middles
+
+	public Arm(final HardwareMap hMap, final String alName, final String arName) { //, final String clawName, final String crName) {
+		arm_l = hMap.get(Servo.class, alName);
+		arm_r = hMap.get(Servo.class, arName);
+//		claw = hMap.get(Servo.class, clawName);
+//		claw_rotate = hMap.get(Servo.class, crName);
+	}
+
+	public void grab() {
+		//claw closing code
+	}
+
+	public void release() {
+		//claw opening code
+	}
+
+
+
+	public void moveArm(double pos) {
+		arm_l.setPosition(pos + armServoOffset);
+		arm_r.setPosition(1-pos);
+	}
+}

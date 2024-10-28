@@ -10,11 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.subsystems.ArmSystem;
-import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.subsystems.HorizontalSlides;
-import org.firstinspires.ftc.teamcode.subsystems.VerticalSlides;
-
+import org.firstinspires.ftc.teamcode.subsystems.*;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
 //http://192.168.43.1:8080/dash
@@ -40,14 +36,15 @@ public class General extends LinearOpMode {
         imu.initialize(parameters);
 
         //subsystems
-        ArmSystem arm = new ArmSystem(hardwareMap, "al", "ar", "claw", "clawrotate");
+        Arm arm = new Arm(hardwareMap, "al", "ar");//, "claw", "clawrotate");       //arm and claw
         DriveTrain dt = new DriveTrain(imu, gamepad1, hardwareMap, "br", "bl", "fr", "fl");
-        HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l");
+        HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l");   //this includes intake
         VerticalSlides vSlides = new VerticalSlides(hardwareMap, "slide");
 
         // set start position of stuff
-        arm.moveArm(armPos);    //change if not config
-        hSlides.move(slideServoPos, slideServoOffset);
+        //arm.moveArm(armPos);    //change if not config
+        //hSlides.move(slideServoPos);
+        //vSlides.reduce();
 
         waitForStart();
 
@@ -55,15 +52,15 @@ public class General extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            arm.moveArm(armPos);    //change if not config
-            dt.update();
-            hSlides.move(slideServoPos, slideServoOffset);
+            //arm.moveArm(armPos);    //change if not config
+            //dt.update();
+            //hSlides.move(slideServoPos, slideServoOffset);
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();
             }
 
-            if (gamepad1.right_bumper) {    // If the A button is pressed, raise the arm
+            if (gamepad1.right_bumper) {    // If the  button is pressed, raise the arm
                 vSlides.extend();
             }
 
@@ -71,11 +68,7 @@ public class General extends LinearOpMode {
                 vSlides.reduce();
             }
 
-            // Show the current and target positions of the vertical slides on telemetry
-            telemetry.addData("Encoder Position", vSlides.getCurrentPos());
-            telemetry.addData("Desired Position", vSlides.getCurrentPos());
-
-            telemetry.update();
+            vSlides.showPos(telemetry);
         }
     }
 }
