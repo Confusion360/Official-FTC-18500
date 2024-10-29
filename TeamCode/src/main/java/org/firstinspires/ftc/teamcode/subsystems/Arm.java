@@ -21,12 +21,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 * moveArm - move arm to specified location
 * */
 
+/*
+ * Stuff on config
+ * claw_hinge (expansion hub 1)
+ * claw (expansion hub 5)
+ * */
+
 public class Arm extends SubsystemBase{
 
 	private final Servo arm_l;
 	private final Servo arm_r;
 	//private final Servo claw;
-	//private final Servo claw_rotate;
+	//private final Servo claw_hinge;
 
 	double armServoOffset = -0.04;	//fixing misaligned middles
 

@@ -38,7 +38,7 @@ public class General extends LinearOpMode {
         //subsystems
         Arm arm = new Arm(hardwareMap, "al", "ar");//, "claw", "clawrotate");       //arm and claw
         DriveTrain dt = new DriveTrain(imu, gamepad1, hardwareMap, "br", "bl", "fr", "fl");
-        HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l");   //this includes intake
+        HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l", "intake", "intHinge_r", "intHinge_l");   //this includes intake
         VerticalSlides vSlides = new VerticalSlides(hardwareMap, "slide");
 
         // set start position of stuff
@@ -54,7 +54,7 @@ public class General extends LinearOpMode {
 
             //arm.moveArm(armPos);    //change if not config
             //dt.update();
-            //hSlides.move(slideServoPos, slideServoOffset);
+            hSlides.move(slideServoPos);
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();
