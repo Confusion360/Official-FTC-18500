@@ -31,16 +31,16 @@ public class Arm extends SubsystemBase{
 
 	private final Servo arm_l;
 	private final Servo arm_r;
-	//private final Servo claw;
-	//private final Servo claw_hinge;
+	private final Servo claw;
+	private final Servo claw_hinge;
 
 	double armServoOffset = -0.04;	//fixing misaligned middles
 
-	public Arm(final HardwareMap hMap, final String alName, final String arName) { //, final String clawName, final String crName) {
-		arm_l = hMap.get(Servo.class, alName);
-		arm_r = hMap.get(Servo.class, arName);
-//		claw = hMap.get(Servo.class, clawName);
-//		claw_rotate = hMap.get(Servo.class, crName);
+	public Arm(final HardwareMap hMap, final String alName, final String arName, final String clawName, final String crName) {
+		arm_r = hMap.get(Servo.class, alName);
+		arm_l = hMap.get(Servo.class, arName);
+		claw = hMap.get(Servo.class, clawName);
+		claw_hinge = hMap.get(Servo.class, crName);
 	}
 
 	public void grab() {

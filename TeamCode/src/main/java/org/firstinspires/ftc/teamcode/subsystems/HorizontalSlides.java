@@ -46,9 +46,8 @@ public class HorizontalSlides extends SubsystemBase {
 	double armForward;
 	double armBack;
 
-	//0.65 max
-	//0.43 min
-	//0.5 good claw pos
+	//0.63 max
+	//0.5 min, intaking pos
 
 	public HorizontalSlides (final HardwareMap hMap, final String rServoName, final String lServoName, final String intakeName, final String rightIntHingeName, final String leftIntHingeName) {
 		rightSlideServo = hMap.get(Servo.class, rServoName);
@@ -59,11 +58,11 @@ public class HorizontalSlides extends SubsystemBase {
 	}
 
 	public void extend() {
-		move(0.65);
+		move(0.63);
 	}
 
 	public void contract() {
-		move(0.43);
+		move(0.5);
 	}
 
 	public void move(double pos) {	//move to position with preset offset
