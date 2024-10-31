@@ -15,21 +15,21 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 /*
-* HorizontalSlides.java Summary
-* HorizontalSlides - constructor
-* - move (pos) - move to pos with preset offset
-* - move (pos, offset) - move to pos with custom offset
-* - intakeOn() - turns intake on
-* - intakeOff() - turns intake off
-* - setIntakeSpeed() - set the intake speed 0-1
-* */
+ * HorizontalSlides.java Summary
+ * HorizontalSlides - constructor
+ * - move (pos) - move to pos with preset offset
+ * - move (pos, offset) - move to pos with custom offset
+ * - intakeOn() - turns intake on
+ * - intakeOff() - turns intake off
+ * - setIntakeSpeed() - set the intake speed 0-1
+ * */
 
 /*
-* names on config
-* intHinge_l (expansion hub 4): left intake hinge
-* intHinge_r (expansion hub 2): right intake hinge
-* intake (expansion hub 3): intake cont. rotation servo
-* */
+ * names on config
+ * intHinge_l (expansion hub 4): left intake hinge
+ * intHinge_r (expansion hub 2): right intake hinge
+ * intake (expansion hub 3): intake cont. rotation servo
+ * */
 
 public class HorizontalSlides extends SubsystemBase {
 	private final Servo rightSlideServo;
@@ -70,10 +70,7 @@ public class HorizontalSlides extends SubsystemBase {
 		leftSlideServo.setPosition(1-pos);
 	}
 
-	public void move(double pos, double offset) {	//move to position with offset you can choose (for testing with @Config)
-		rightSlideServo.setPosition(pos + offset);
-		leftSlideServo.setPosition(1-pos);
-	}
+
 
 	public void intakeOn() {	// make intake spin
 		intakeServo.setPower(intakeSpeed);
@@ -96,4 +93,6 @@ public class HorizontalSlides extends SubsystemBase {
 		rightIntHinge.setPosition(pos + offset);
 		leftIntHinge.setPosition(1-pos);
 	}
+
+	public void
 }

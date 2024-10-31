@@ -14,12 +14,12 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 /*
-* Arm.java Summary
-* ArmSystem - constructor
-* grab - closes claw
-* release - opens claw
-* moveArm - move arm to specified location
-* */
+ * Arm.java Summary
+ * ArmSystem - constructor
+ * grab - closes claw
+ * release - opens claw
+ * moveArm - move arm to specified location
+ * */
 
 /*
  * Stuff on config
@@ -37,21 +37,26 @@ public class Arm extends SubsystemBase{
 	double armServoOffset = -0.04;	//fixing misaligned middles
 
 	public Arm(final HardwareMap hMap, final String alName, final String arName, final String clawName, final String crName) {
-		arm_r = hMap.get(Servo.class, alName);
-		arm_l = hMap.get(Servo.class, arName);
+		arm_l = hMap.get(Servo.class, alName);
+		arm_r = hMap.get(Servo.class, arName);
 		claw = hMap.get(Servo.class, clawName);
 		claw_hinge = hMap.get(Servo.class, crName);
 	}
 
 	public void grab() {
-		//claw closing code
+		claw.setPosition(1);
 	}
 
 	public void release() {
-		//claw opening code
+		claw.setPosition(0.5);
 	}
 
-
+	public void moveHinge(double pos) {
+		claw_hinge.setPosition(pos);
+		//middle - 0.48
+		//max - 0.75
+		//min - 0.22
+	}
 
 	public void moveArm(double pos) {
 		arm_l.setPosition(pos + armServoOffset);
