@@ -18,10 +18,11 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 @TeleOp
 public class General extends LinearOpMode {
 
-    public static double slideServoPos = 0.5;
-    public static double slideServoOffset = 0.0;
+    //public static double slideServoPos = 0.5;
+    //public static double slideServoOffset = 0.0;
 
     public static double armPos = 0.5;
+    public static double hingePos = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -36,9 +37,9 @@ public class General extends LinearOpMode {
         imu.initialize(parameters);
 
         //subsystems
-        Arm arm = new Arm(hardwareMap, "al", "ar");//, "claw", "clawrotate");       //arm and claw
+        Arm arm = new Arm(hardwareMap, "al", "ar","claw", "claw_hinge");//, "claw", "clawrotate");       //arm and claw
         DriveTrain dt = new DriveTrain(imu, gamepad1, hardwareMap, "br", "bl", "fr", "fl");
-        HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l");   //this includes intake
+        HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l","intake", "intHinge_r","intHinge_l");   //this includes intake
         VerticalSlides vSlides = new VerticalSlides(hardwareMap, "slide");
 
         // set start position of stuff
@@ -54,7 +55,8 @@ public class General extends LinearOpMode {
 
             //arm.moveArm(armPos);    //change if not config
             //dt.update();
-            //hSlides.move(slideServoPos, slideServoOffset);
+            //hSlides.move(slideServoPos);
+            arm.moveHinge(hingePos);
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();

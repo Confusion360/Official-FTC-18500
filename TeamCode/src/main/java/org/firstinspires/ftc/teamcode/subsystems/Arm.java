@@ -14,38 +14,49 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 /*
-* Arm.java Summary
-* ArmSystem - constructor
-* grab - closes claw
-* release - opens claw
-* moveArm - move arm to specified location
-* */
+ * Arm.java Summary
+ * ArmSystem - constructor
+ * grab - closes claw
+ * release - opens claw
+ * moveArm - move arm to specified location
+ * */
+
+/*
+ * Stuff on config
+ * claw_hinge (expansion hub 1)
+ * claw (expansion hub 5)
+ * */
 
 public class Arm extends SubsystemBase{
 
 	private final Servo arm_l;
 	private final Servo arm_r;
-	//private final Servo claw;
-	//private final Servo claw_rotate;
+	private final Servo claw;
+	private final Servo claw_hinge;
 
 	double armServoOffset = -0.04;	//fixing misaligned middles
 
-	public Arm(final HardwareMap hMap, final String alName, final String arName) { //, final String clawName, final String crName) {
+	public Arm(final HardwareMap hMap, final String alName, final String arName, final String clawName, final String crName) {
 		arm_l = hMap.get(Servo.class, alName);
 		arm_r = hMap.get(Servo.class, arName);
-//		claw = hMap.get(Servo.class, clawName);
-//		claw_rotate = hMap.get(Servo.class, crName);
+		claw = hMap.get(Servo.class, clawName);
+		claw_hinge = hMap.get(Servo.class, crName);
 	}
 
 	public void grab() {
-		//claw closing code
+		claw.setPosition(1);
 	}
 
 	public void release() {
-		//claw opening code
+		claw.setPosition(0.5);
 	}
 
-
+	public void moveHinge(double pos) {
+		claw_hinge.setPosition(pos);
+		//middle - 0.48
+		//max - 0.75
+		//min - 0.22
+	}
 
 	public void moveArm(double pos) {
 		arm_l.setPosition(pos + armServoOffset);
