@@ -31,13 +31,13 @@ public class VerticalSlides extends SubsystemBase{
 	public void extend () {		//extends arm to max pos
 		motor.setTargetPosition(SLIDE_MAX_POSITION);
 		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		motor.setPower(0.5);
+		motor.setPower(1);
 	}
 
 	public void reduce () {		//reduces arm to min pos
 		motor.setTargetPosition(SLIDE_MIN_POSITION);
 		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		motor.setPower(0.5);
+		motor.setPower(1);
 	}
 
 	public void moveToPos (int pos) {	//move to pos from SLIDE_MIN_POS to SLIDE_MAX_POS
