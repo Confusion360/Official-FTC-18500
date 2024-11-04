@@ -36,7 +36,7 @@ public class General extends LinearOpMode {
         IMU imu = hardwareMap.get(IMU.class, "imu");
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
@@ -75,48 +75,45 @@ public class General extends LinearOpMode {
 
             if (gamepad1.a) {    // If the  button is pressed, raise the arm
                 hSlides.move(0.67);
-                sleep(500);
+                sleep(150);
                 hSlides.setHingePos(0.49);
                 hSlides.intakeOn();
             } else if (gamepad1.b){
                 hSlides.intakeOff();
                 hSlides.setHingePos(0.17);
-                sleep(1000);
+                sleep(100);
                 arm.moveArm(0.43);
                 arm.moveHinge(0.43);
-                sleep(1000);
+                sleep(450);
                 hSlides.move(0.55);
-                sleep(1000);
+                sleep(150);
                 hSlides.move(0.5);
-                sleep(1000);
+                sleep(150);
                 arm.grab(1);
-                sleep(1000);
+                sleep(500);
                 arm.moveHinge(0.6);
                 hSlides.move(0.6);
-                sleep(1000);
+                sleep(500);
                 arm.moveArm(0.7);
             } else if (gamepad1.x) {
                 arm.release();
+                sleep(1000);
+                arm.moveArm(0.7);
+                vSlides.moveToPos(0);
             } else if (gamepad1.y) {
                 hSlides.intakeEject();
             } else if (gamepad1.dpad_up) {
                 vSlides.moveToPos(2300);
-                arm.moveArm(0.7);
-                arm.moveHinge(0.3);
-                sleep(7000);
-                arm.release();
+                arm.moveArm(0.8);
+                arm.moveHinge(0.4);
             } else if (gamepad1.dpad_left) {
-                vSlides.moveToPos(1750);
-                arm.moveArm(0.7);
-                arm.moveHinge(0.3);
-                sleep(7000);
-                arm.release();
+                vSlides.moveToPos(2030);
+                arm.moveArm(0.5);
+                arm.moveHinge(0);
             } else if (gamepad1.dpad_down) {
                 vSlides.moveToPos(0);
                 arm.moveArm(1);
                 arm.moveHinge(0.45);
-                sleep(1000);
-                arm.release();
             }
 
 
