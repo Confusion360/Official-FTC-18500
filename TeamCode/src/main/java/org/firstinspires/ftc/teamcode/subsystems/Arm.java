@@ -43,8 +43,8 @@ public class Arm extends SubsystemBase{
 		claw_hinge = hMap.get(Servo.class, crName);
 	}
 
-	public void grab() {
-		claw.setPosition(1);
+	public void grab(double pos) {
+		claw.setPosition(pos);
 	}
 
 	public void release() {
@@ -55,7 +55,7 @@ public class Arm extends SubsystemBase{
 		claw_hinge.setPosition(pos);
 		//middle - 0.48
 		//max - 0.75
-		//min - 0.22
+		//min - 0.21
 	}
 
 	public void moveArm(double pos) {

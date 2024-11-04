@@ -38,8 +38,6 @@ public class HorizontalSlides extends SubsystemBase {
 	private final Servo rightIntHinge;
 	private final Servo leftIntHinge;
 	double rightOffset = -0.005;
-	double intakeOffset = 0.0;
-	double intakeSpeed = 0.5;
 
 	//preset positions
 	double armUp;
@@ -73,26 +71,35 @@ public class HorizontalSlides extends SubsystemBase {
 
 
 	public void intakeOn() {	// make intake spin
-		intakeServo.setPower(intakeSpeed);
+		intakeServo.setPower(-1);
 	}
 
-	public void intakeOff() {
+	public void intakeOff() { // make intake turn off
 		intakeServo.setPower(0);
 	}
 
-	public void setIntakeSpeed(double speed) {		//change intake spin power
-		intakeSpeed = speed;
+	public void intakeEject(){intakeServo.setPower(1);} // make intake eject sample
+
+	public void setHingePos(double pos) {
+
+		rightIntHinge.setPosition(pos+0.02);
+		leftIntHinge.setPosition(pos);
+
+//		if (pos==1) {
+//			rightIntHinge.setPosition(0.49);
+//			leftIntHinge.setPosition(0.49);
+//		} else if(pos==0){
+//			rightIntHinge.setPosition(0.17);
+//			leftIntHinge.setPosition(0.15);
+//
+//		}
 	}
 
-	public void setIntHingePos(double pos) {
-		rightIntHinge.setPosition(pos + intakeOffset);
-		leftIntHinge.setPosition(1-pos);
-	}
+	//right rest = 0.7
+	//right intake 0.17
 
-	public void setIntHingePos(double pos, double offset) {
-		rightIntHinge.setPosition(pos + offset);
-		leftIntHinge.setPosition(1-pos);
-	}
+	//left rest 0.15
+	//left intake 0.51
 
-	public void
+
 }

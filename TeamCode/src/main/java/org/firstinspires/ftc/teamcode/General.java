@@ -21,8 +21,13 @@ public class General extends LinearOpMode {
     //public static double slideServoPos = 0.5;
     //public static double slideServoOffset = 0.0;
 
-    public static double armPos = 0.5;
-    public static double hingePos = 0.5;
+    public static double armPos = 0.7;
+    public static double outtakeHingePos = 0.5;
+    public static double HorizontalslideServoPos = 0.5;
+    public static int VerticalslidePos = 0;
+    public static double intakeHingePos = 0.4;
+    public static double claw = 0.5;
+    public static double intake = 0.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -50,25 +55,70 @@ public class General extends LinearOpMode {
         waitForStart();
 
         if (isStopRequested()) return;
-
+        hSlides.setHingePos(0.2);
+        arm.moveArm(0.6);
+        hSlides.move(0.5);
         while (opModeIsActive()) {
 
-            //arm.moveArm(armPos);    //change if not config
-            //dt.update();
-            //hSlides.move(slideServoPos);
-            arm.moveHinge(hingePos);
+//            arm.moveArm(armPos);    //change if not config
+              dt.update();
+//            vSlides.moveToPos(VerticalslidePos);
+//            hSlides.move(HorizontalslideServoPos);
+//            arm.moveHinge(outtakeHingePos);
+//            //hSlides.setIntHingePos(intakeHingePos);
+//            hSlides.setHingePos(intakeHingePos);
+//            arm.grab(claw);
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();
             }
 
-            if (gamepad1.right_bumper) {    // If the  button is pressed, raise the arm
-                vSlides.extend();
+            if (gamepad1.a) {    // If the  button is pressed, raise the arm
+                hSlides.move(0.67);
+                sleep(500);
+                hSlides.setHingePos(0.49);
+                hSlides.intakeOn();
+            } else if (gamepad1.b){
+                hSlides.intakeOff();
+                hSlides.setHingePos(0.17);
+                sleep(1000);
+                arm.moveArm(0.43);
+                arm.moveHinge(0.43);
+                sleep(1000);
+                hSlides.move(0.55);
+                sleep(1000);
+                hSlides.move(0.5);
+                sleep(1000);
+                arm.grab(1);
+                sleep(1000);
+                arm.moveHinge(0.6);
+                hSlides.move(0.6);
+                sleep(1000);
+                arm.moveArm(0.7);
+            } else if (gamepad1.x) {
+                arm.release();
+            } else if (gamepad1.y) {
+                hSlides.intakeEject();
+            } else if (gamepad1.dpad_up) {
+                vSlides.moveToPos(2300);
+                arm.moveArm(0.7);
+                arm.moveHinge(0.3);
+                sleep(7000);
+                arm.release();
+            } else if (gamepad1.dpad_left) {
+                vSlides.moveToPos(1750);
+                arm.moveArm(0.7);
+                arm.moveHinge(0.3);
+                sleep(7000);
+                arm.release();
+            } else if (gamepad1.dpad_down) {
+                vSlides.moveToPos(0);
+                arm.moveArm(1);
+                arm.moveHinge(0.45);
+                sleep(1000);
+                arm.release();
             }
 
-            if (gamepad1.left_bumper) {     // If the B button is pressed, lower the arm
-                vSlides.reduce();
-            }
 
             vSlides.showPos(telemetry);
         }
