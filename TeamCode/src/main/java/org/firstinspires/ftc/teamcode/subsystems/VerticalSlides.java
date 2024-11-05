@@ -43,7 +43,7 @@ public class VerticalSlides extends SubsystemBase{
 	public void moveToPos (int pos) {	//move to pos from SLIDE_MIN_POS to SLIDE_MAX_POS
 		motor.setTargetPosition(pos);
 		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		motor.setPower(0.5);
+		motor.setPower(1);
 	}
 
 	public double getTargetPos () {		//for telemetry

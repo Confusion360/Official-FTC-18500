@@ -73,46 +73,48 @@ public class General extends LinearOpMode {
                 imu.resetYaw();
             }
 
-            if (gamepad1.a) {    // If the  button is pressed, raise the arm
-                hSlides.move(0.67);
-                sleep(150);
+            if (gamepad1.right_trigger >= 0.2) {    // IntakeReady
+                hSlides.move(0.66);
+                sleep(300);
                 hSlides.setHingePos(0.49);
                 hSlides.intakeOn();
-            } else if (gamepad1.b){
+            } else if (gamepad1.b){             //IntakeToArmTransfer
                 hSlides.intakeOff();
+                arm.release();
                 hSlides.setHingePos(0.17);
-                sleep(100);
-                arm.moveArm(0.43);
+                sleep(200);
+                arm.moveArm(0.42);
                 arm.moveHinge(0.43);
-                sleep(450);
+                sleep(250);
                 hSlides.move(0.55);
-                sleep(150);
+                sleep(400);
                 hSlides.move(0.5);
-                sleep(150);
+                sleep(600);
                 arm.grab(1);
                 sleep(500);
                 arm.moveHinge(0.6);
                 hSlides.move(0.6);
                 sleep(500);
                 arm.moveArm(0.7);
-            } else if (gamepad1.x) {
+                hSlides.move(0.55);
+            } else if (gamepad1.left_trigger >= 0.2) {            //ReleaseSample
                 arm.release();
                 sleep(1000);
                 arm.moveArm(0.7);
                 vSlides.moveToPos(0);
-            } else if (gamepad1.y) {
+            } else if (gamepad1.right_bumper) {            //IntakeEject
                 hSlides.intakeEject();
-            } else if (gamepad1.dpad_up) {
+            } else if (gamepad1.dpad_up) {      //VerticalSlidesExtend
                 vSlides.moveToPos(2300);
                 arm.moveArm(0.8);
                 arm.moveHinge(0.4);
-            } else if (gamepad1.dpad_left) {
+            } else if (gamepad1.dpad_left) {    //VerticalSlidesPrep
                 vSlides.moveToPos(2030);
                 arm.moveArm(0.5);
                 arm.moveHinge(0);
-            } else if (gamepad1.dpad_down) {
+            } else if (gamepad1.dpad_down) {    //VerticalSlidesContract
                 vSlides.moveToPos(0);
-                arm.moveArm(1);
+                arm.moveArm(0.9);
                 arm.moveHinge(0.45);
             }
 

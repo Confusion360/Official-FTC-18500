@@ -8,6 +8,7 @@ public class IntakeReady extends CommandBase{
 
 	public IntakeReady(HorizontalSlides hSlides_p) {
 		hSlides = hSlides_p;
+		addRequirements(hSlides);
 	}
 
 	@Override
@@ -26,5 +27,6 @@ public class IntakeReady extends CommandBase{
 		}
 	}
 
+	@Override
 	public boolean isFinished() {return true;}
 }

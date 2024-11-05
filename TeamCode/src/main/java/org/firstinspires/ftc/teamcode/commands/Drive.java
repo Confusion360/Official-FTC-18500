@@ -8,6 +8,7 @@ public class Drive extends CommandBase {
 
 	public Drive(DriveTrain dt_p) {
 		dt = dt_p;
+		addRequirements(dt);
 	}
 
 	@Override

@@ -4,12 +4,12 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 
 // command for moving the sample from the intake to the arm, getting it ready for elevation to the basket
-public class IntakeToArm extends CommandBase{
+public class IntakeToArmTransfer extends CommandBase{
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 	private final HorizontalSlides hSlides;
 	private final Arm arm;
 
-	public IntakeToArm(Arm arm_p, HorizontalSlides hSlides_p) {
+	public IntakeToArmTransfer(Arm arm_p, HorizontalSlides hSlides_p) {
 		hSlides = hSlides_p;
 		arm = arm_p;
 		addRequirements(hSlides, arm);
@@ -43,5 +43,6 @@ public class IntakeToArm extends CommandBase{
 		}
 	}
 
+	@Override
 	public boolean isFinished() {return true;}
 }
