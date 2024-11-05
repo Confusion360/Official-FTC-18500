@@ -74,21 +74,22 @@ public class General extends LinearOpMode {
             }
 
             if (gamepad1.a) {    // If the  button is pressed, raise the arm
-                hSlides.move(0.67);
-                sleep(150);
+                hSlides.move(0.66);
+                sleep(300);
                 hSlides.setHingePos(0.49);
                 hSlides.intakeOn();
             } else if (gamepad1.b){
                 hSlides.intakeOff();
+                arm.release();
                 hSlides.setHingePos(0.17);
-                sleep(100);
-                arm.moveArm(0.43);
+                sleep(200);
+                arm.moveArm(0.435);
                 arm.moveHinge(0.43);
-                sleep(450);
+                sleep(250);
                 hSlides.move(0.55);
-                sleep(150);
+                sleep(400);
                 hSlides.move(0.5);
-                sleep(150);
+                sleep(600);
                 arm.grab(1);
                 sleep(500);
                 arm.moveHinge(0.6);
@@ -112,7 +113,7 @@ public class General extends LinearOpMode {
                 arm.moveHinge(0);
             } else if (gamepad1.dpad_down) {
                 vSlides.moveToPos(0);
-                arm.moveArm(1);
+                arm.moveArm(0.9);
                 arm.moveHinge(0.45);
             }
 
