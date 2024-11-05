@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "Command TeleOp")
 public class CmdOpMode extends CommandOpMode {
-	Robot robot_teleOp = new MyRobot(MyRobot.OpModeType.TELEOP);
+	//Robot robot_teleOp = new MyRobot(MyRobot.OpModeType.TELEOP);
 	private IMU imu;
 	private IMU.Parameters parameters;
 	private GamepadEx gamepad1;
@@ -79,6 +79,9 @@ public class CmdOpMode extends CommandOpMode {
 
 		transfer_btn = (new GamepadButton(gamepad1, GamepadKeys.Button.A)).whenPressed(transfer_comm);
 		eject_btn = (new GamepadButton(gamepad1, GamepadKeys.Button.RIGHT_BUMPER)).whenPressed(intakeEject_comm);
+		vExtend_btn = (new GamepadButton(gamepad1, GamepadKeys.Button.DPAD_UP)).whenPressed(vSlidesExtend_comm);
+		vContract_btn = (new GamepadButton(gamepad1, GamepadKeys.Button.DPAD_DOWN)).whenPressed(vSlidesContract_comm);
+		vPrep_btn = (new GamepadButton(gamepad1, GamepadKeys.Button.LEFT_BUMPER)).whenPressed(vSlidesPrep_comm);
 
 		//trigger handling
 		intReady_btn.whenActive(intakeReady_comm);	//whenActive only schedules something once per time the condition is met
@@ -89,6 +92,6 @@ public class CmdOpMode extends CommandOpMode {
 		register(arm);  // Register all subsystems
 		register(hSlides);
 		register(vSlides);
-		dt.setDefaultCommand(drive_comm);
+		dt.setDefaultCommand(drive_comm);	//unless drivetrain is being used elsewhere (which it cannot be), do drive stuff
 	}
 }
