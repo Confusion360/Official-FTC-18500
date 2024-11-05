@@ -73,12 +73,12 @@ public class General extends LinearOpMode {
                 imu.resetYaw();
             }
 
-            if (gamepad1.a) {    // If the  button is pressed, raise the arm
+            if (gamepad1.right_trigger >= 0.2) {    // If the  button is pressed, raise the arm
                 hSlides.move(0.66);
                 sleep(300);
                 hSlides.setHingePos(0.49);
                 hSlides.intakeOn();
-            } else if (gamepad1.b){
+            } else if (gamepad1.left_trigger >= 0.2){
                 hSlides.intakeOff();
                 arm.release();
                 hSlides.setHingePos(0.17);
@@ -96,12 +96,14 @@ public class General extends LinearOpMode {
                 hSlides.move(0.6);
                 sleep(500);
                 arm.moveArm(0.7);
-            } else if (gamepad1.x) {
+                sleep(100);
+                hSlides.move(0.5);
+            } else if (gamepad1.right_bumper) {
                 arm.release();
                 sleep(1000);
                 arm.moveArm(0.7);
                 vSlides.moveToPos(0);
-            } else if (gamepad1.y) {
+            } else if (gamepad1.left_bumper) {
                 hSlides.intakeEject();
             } else if (gamepad1.dpad_up) {
                 vSlides.moveToPos(2300);
@@ -113,11 +115,9 @@ public class General extends LinearOpMode {
                 arm.moveHinge(0);
             } else if (gamepad1.dpad_down) {
                 vSlides.moveToPos(0);
-                arm.moveArm(0.9);
+                arm.moveArm(1);
                 arm.moveHinge(0.45);
             }
-
-
             vSlides.showPos(telemetry);
         }
     }
