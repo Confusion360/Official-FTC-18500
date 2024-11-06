@@ -43,6 +43,7 @@ public class HorizontalSlides extends SubsystemBase {
 	double armUp;
 	double armForward;
 	double armBack;
+	double currentPos;
 
 	//0.63 max
 	//0.5 min, intaking pos
@@ -68,7 +69,21 @@ public class HorizontalSlides extends SubsystemBase {
 		leftSlideServo.setPosition(1-pos);
 	}
 
+	public void extendFurther() {
+		currentPos = leftSlideServo.getPosition();
+		if (currentPos > 0.5 && currentPos < 0.63) {
+			sleep(50);
+			move(currentPos+0.01);
+		}
+	}
 
+	public void contractFurther() {
+		currentPos = leftSlideServo.getPosition();
+		if (currentPos > 0.5 && currentPos < 0.63) {
+			sleep(50);
+			move(currentPos+0.01);
+		}
+	}
 
 	public void intakeOn() {	// make intake spin
 		intakeServo.setPower(-1);
@@ -81,25 +96,15 @@ public class HorizontalSlides extends SubsystemBase {
 	public void intakeEject(){intakeServo.setPower(1);} // make intake eject sample
 
 	public void setHingePos(double pos) {
-
-		rightIntHinge.setPosition(pos+0.02);
+		rightIntHinge.setPosition(pos + 0.02);
 		leftIntHinge.setPosition(pos);
-
-//		if (pos==1) {
-//			rightIntHinge.setPosition(0.49);
-//			leftIntHinge.setPosition(0.49);
-//		} else if(pos==0){
-//			rightIntHinge.setPosition(0.17);
-//			leftIntHinge.setPosition(0.15);
-//
-//		}
 	}
 
-	//right rest = 0.7
-	//right intake 0.17
-
-	//left rest 0.15
-	//left intake 0.51
-
-
+	private static void sleep(long milliseconds) {
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
+	}
 }

@@ -8,15 +8,18 @@ public class IntakeToArmTransfer extends CommandBase{
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 	private final HorizontalSlides hSlides;
 	private final Arm arm;
+	private final VerticalSlides vSlides;
 
-	public IntakeToArmTransfer(Arm arm_p, HorizontalSlides hSlides_p) {
+	public IntakeToArmTransfer(Arm arm_p, HorizontalSlides hSlides_p, VerticalSlides vSlides_p) {
 		hSlides = hSlides_p;
 		arm = arm_p;
-		addRequirements(hSlides, arm);
+		vSlides = vSlides_p;
+		addRequirements(hSlides, arm, vSlides);
 	}
 
 	@Override
 	public void initialize() {
+		vSlides.moveToPos(0);
 		hSlides.intakeOff();
 		hSlides.setHingePos(0.17);
 		sleep(100);
@@ -33,6 +36,7 @@ public class IntakeToArmTransfer extends CommandBase{
 		hSlides.move(0.6);
 		sleep(500);
 		arm.moveArm(0.7);
+		hSlides.move(0.55);
 	}
 
 	public static void sleep(long milliseconds) {

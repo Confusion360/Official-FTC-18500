@@ -42,14 +42,14 @@ public class DriveTrain extends SubsystemBase {
 		// reverse the left side instead.
 		// See the note about this earlier on this page.
 		// (copied this part from General.java, wasnt sure if relevant)
-		frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-		backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+		frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+		backRight.setDirection(DcMotorSimple.Direction.FORWARD);
 	}
 
 	public void update() {	//checks gamepad and does movement stuff
-		double y = gamepad1.getLeftY(); // Remember, Y stick value is reversed
-		double x = -gamepad1.getLeftX();
-		double rx = -gamepad1.getRightX();
+		double y = -gamepad1.getLeftY(); // Remember, Y stick value is reversed
+		double x = gamepad1.getLeftX();
+		double rx = gamepad1.getRightX();
 
 		double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
