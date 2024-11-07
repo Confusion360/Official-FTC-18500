@@ -68,6 +68,7 @@ public class General extends LinearOpMode {
         //0.83 - transfer position
         waitForStart();
 
+        boolean drivingOn = false;
         Thread driving = new Thread(() -> {
             DriveTrain dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
             while (opModeIsActive()) {
@@ -81,7 +82,7 @@ public class General extends LinearOpMode {
         hSlides.move(0.5);
         while (opModeIsActive()) {
 
-            driving.start();
+            if (!drivingOn) driving.start();
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();
