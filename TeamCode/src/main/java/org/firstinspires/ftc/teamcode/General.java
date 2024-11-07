@@ -47,7 +47,7 @@ public class General extends LinearOpMode {
 
         //subsystems
         Arm arm = new Arm(hardwareMap, "al", "ar","claw", "claw_hinge");//, "claw", "clawrotate");       //arm and claw
-        DriveTrain dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
+        //DriveTrain dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
         HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l","intake", "intHinge_r","intHinge_l");   //this includes intake
         VerticalSlides vSlides = new VerticalSlides(hardwareMap, "slide");
 
@@ -68,13 +68,20 @@ public class General extends LinearOpMode {
         //0.83 - transfer position
         waitForStart();
 
+        Thread driving = new Thread(() -> {
+            DriveTrain dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
+            while (opModeIsActive()) {
+                dt.update();
+            }
+        });
+
         if (isStopRequested()) return;
         hSlides.setHingePos(0.2);
         arm.moveArm(0.6);
         hSlides.move(0.5);
         while (opModeIsActive()) {
 
-              dt.update();
+            driving.start();
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();
@@ -83,6 +90,7 @@ public class General extends LinearOpMode {
             if (gamepad1.right_trigger >= 0.2) {    // If the  button is pressed, raise the arm
                 hSlides.move(0.66);
                 sleep(300);
+                //dt.update();
                 hSlides.setHingePos(0.49);
                 hSlides.intakeOn();
             } else if (gamepad1.left_trigger >= 0.2){
@@ -90,26 +98,34 @@ public class General extends LinearOpMode {
                 arm.release();
                 hSlides.setHingePos(0.17);
                 sleep(200);
+                //dt.update();
                 arm.moveArm(0.839);
                 arm.moveHinge(0.43);
                 sleep(250);
                 hSlides.move(0.49);
+                //dt.update();
                 sleep(800);
+                //dt.update();
                 arm.grab(1);
                 sleep(500);
                 arm.moveHinge(0.6);
+                //dt.update();
                 hSlides.move(0.6);
                 sleep(500);
+                //dt.update();
                 arm.moveArm(0.52);
                 sleep(100);
                 hSlides.move(0.51);
             } else if (gamepad1.right_bumper) {
                 arm.moveHinge(0.4);
                 sleep(350);
+                //dt.update();
                 arm.moveArm(0.5);
                 sleep(150);
                 arm.release();
+                //dt.update();
                 sleep(300);
+                //dt.update();
                 arm.moveArm(0.6);
                 vSlides.moveToPos(0);
             } else if (gp2.isDown(GamepadKeys.Button.A)) {
