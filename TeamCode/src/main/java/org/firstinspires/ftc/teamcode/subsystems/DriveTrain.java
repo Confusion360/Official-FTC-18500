@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -25,7 +26,7 @@ public class DriveTrain extends SubsystemBase {
 	private final DcMotor backLeft;
 	private final DcMotor frontRight;
 	private final DcMotor frontLeft;
-	private final Gamepad gamepad1;
+	private final GamepadEx gamepad1;
 	IMU imu;
 
 	public DriveTrain(final IMU imu1, Gamepad gamepad, HardwareMap hMap, final String br, final String bl, final String fr, final String fl) {
@@ -33,7 +34,7 @@ public class DriveTrain extends SubsystemBase {
 		backLeft = hMap.get(DcMotor.class, bl);
 		frontRight = hMap.get(DcMotor.class, fr);
 		frontLeft = hMap.get(DcMotor.class, fl);
-		gamepad1 = gamepad;
+		gamepad1 = new GamepadEx(gamepad);
 		imu = imu1;
 
 		// Reverse the right side motors. This may be wrong for your setup.
@@ -41,14 +42,14 @@ public class DriveTrain extends SubsystemBase {
 		// reverse the left side instead.
 		// See the note about this earlier on this page.
 		// (copied this part from General.java, wasnt sure if relevant)
-		frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
-		backRight.setDirection(DcMotorSimple.Direction.FORWARD);
+		frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+		backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 	}
 
 	public void update() {	//checks gamepad and does movement stuff
-		double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-		double x = gamepad1.left_stick_x;
-		double rx = gamepad1.right_stick_x;
+		double y = -gamepad1.getLeftY(); // Remember, Y stick value is reversed
+		double x = -gamepad1.getLeftX();
+		double rx = -gamepad1.getRightX();
 
 		double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 

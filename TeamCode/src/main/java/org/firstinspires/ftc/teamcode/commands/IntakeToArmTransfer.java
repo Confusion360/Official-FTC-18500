@@ -30,12 +30,14 @@ public class IntakeToArmTransfer extends CommandBase{
 		sleep(150);
 		hSlides.move(0.5);
 		sleep(150);
-		arm.grab(1);
+		arm.grab(0.95);
 		sleep(500);
 		arm.moveHinge(0.6);
 		hSlides.move(0.6);
 		sleep(500);
+		arm.grab(1);
 		arm.moveArm(0.7);
+		sleep(1000);
 		hSlides.move(0.55);
 	}
 

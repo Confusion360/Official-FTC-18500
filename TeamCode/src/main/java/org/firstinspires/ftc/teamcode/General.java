@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -12,6 +14,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+
 
 //http://192.168.43.1:8080/dash
 @Config
@@ -40,10 +43,11 @@ public class General extends LinearOpMode {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
+        GamepadEx gp2 = new GamepadEx(gamepad2);
 
         //subsystems
         Arm arm = new Arm(hardwareMap, "al", "ar","claw", "claw_hinge");//, "claw", "clawrotate");       //arm and claw
-        DriveTrain dt = new DriveTrain(imu, gamepad1, hardwareMap, "br", "bl", "fr", "fl");
+        DriveTrain dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
         HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l","intake", "intHinge_r","intHinge_l");   //this includes intake
         VerticalSlides vSlides = new VerticalSlides(hardwareMap, "slide");
 
@@ -52,6 +56,16 @@ public class General extends LinearOpMode {
         //hSlides.move(slideServoPos);
         //vSlides.reduce();
 
+        //hSlides max position - 0.63
+        //hSlides min position - 0.5
+
+        //intakeHinge max position - 0.49
+        //intakeHinge min position
+
+        //arm positions
+        //0.18 - autonomous pickup
+        //0.52 - outtake
+        //0.83 - transfer position
         waitForStart();
 
         if (isStopRequested()) return;
@@ -60,14 +74,7 @@ public class General extends LinearOpMode {
         hSlides.move(0.5);
         while (opModeIsActive()) {
 
-//            arm.moveArm(armPos);    //change if not config
               dt.update();
-//            vSlides.moveToPos(VerticalslidePos);
-//            hSlides.move(HorizontalslideServoPos);
-//            arm.moveHinge(outtakeHingePos);
-//            //hSlides.setIntHingePos(intakeHingePos);
-//            hSlides.setHingePos(intakeHingePos);
-//            arm.grab(claw);
 
             if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
                 imu.resetYaw();
@@ -83,31 +90,34 @@ public class General extends LinearOpMode {
                 arm.release();
                 hSlides.setHingePos(0.17);
                 sleep(200);
-                arm.moveArm(0.435);
+                arm.moveArm(0.839);
                 arm.moveHinge(0.43);
                 sleep(250);
-                hSlides.move(0.55);
-                sleep(400);
-                hSlides.move(0.5);
-                sleep(600);
+                hSlides.move(0.49);
+                sleep(800);
                 arm.grab(1);
                 sleep(500);
                 arm.moveHinge(0.6);
                 hSlides.move(0.6);
                 sleep(500);
-                arm.moveArm(0.7);
+                arm.moveArm(0.52);
                 sleep(100);
-                hSlides.move(0.5);
+                hSlides.move(0.51);
             } else if (gamepad1.right_bumper) {
+                arm.moveHinge(0.4);
+                sleep(350);
+                arm.moveArm(0.5);
+                sleep(150);
                 arm.release();
-                sleep(1000);
-                arm.moveArm(0.7);
+                sleep(300);
+                arm.moveArm(0.6);
                 vSlides.moveToPos(0);
-            } else if (gamepad1.left_bumper) {
+            } else if (gp2.isDown(GamepadKeys.Button.A)) {
                 hSlides.intakeEject();
+            } else if (gp2.isDown(GamepadKeys.Button.B)){
+                hSlides.intakeOff();
             } else if (gamepad1.dpad_up) {
                 vSlides.moveToPos(2300);
-                arm.moveArm(0.8);
                 arm.moveHinge(0.4);
             } else if (gamepad1.dpad_left) {
                 vSlides.moveToPos(2030);
@@ -115,7 +125,7 @@ public class General extends LinearOpMode {
                 arm.moveHinge(0);
             } else if (gamepad1.dpad_down) {
                 vSlides.moveToPos(0);
-                arm.moveArm(1);
+                arm.moveArm(0.52);
                 arm.moveHinge(0.45);
             }
             vSlides.showPos(telemetry);

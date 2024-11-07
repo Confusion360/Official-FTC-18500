@@ -34,7 +34,7 @@ public class Arm extends SubsystemBase{
 	private final Servo claw;
 	private final Servo claw_hinge;
 
-	double armServoOffset = -0.04;	//fixing misaligned middles
+	//double armServoOffset = -0.04;	//fixing misaligned middles
 
 	public Arm(final HardwareMap hMap, final String alName, final String arName, final String clawName, final String crName) {
 		arm_l = hMap.get(Servo.class, alName);
@@ -59,7 +59,7 @@ public class Arm extends SubsystemBase{
 	}
 
 	public void moveArm(double pos) {
-		arm_l.setPosition(pos + armServoOffset);
-		arm_r.setPosition(1-pos);
+		arm_l.setPosition(1-pos);
+		arm_r.setPosition(pos);
 	}
 }

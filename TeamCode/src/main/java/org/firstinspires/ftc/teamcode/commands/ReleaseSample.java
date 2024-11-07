@@ -16,6 +16,7 @@ public class ReleaseSample extends CommandBase{
 	@Override
 	public void initialize() {
 		arm.release();
+		arm.moveArm(0.69);
 		sleep(1000);
 		arm.moveArm(0.7);
 		vSlides.moveToPos(0);

@@ -67,7 +67,7 @@ public class CmdOpMode extends CommandOpMode {
 
 		//subsystem init
 		arm = new Arm(hardwareMap, "al", "ar","claw", "claw_hinge");//, "claw", "clawrotate");       //arm and claw
-		dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
+		//dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
 		hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l","intake", "intHinge_r","intHinge_l");   //this includes intake
 		vSlides = new VerticalSlides(hardwareMap, "slide");
 
@@ -105,11 +105,11 @@ public class CmdOpMode extends CommandOpMode {
 
 		// Driving setup
 
-		register(dt);
+		//register(dt);
 		register(arm);  // Register all subsystems
 		register(hSlides);
 		register(vSlides);
-		dt.setDefaultCommand(drive_comm);	//unless drivetrain is being used elsewhere (which it cannot be) do drive stuff
+		//dt.setDefaultCommand(drive_comm);	//unless drivetrain is being used elsewhere (which it cannot be) do drive stuff
 		schedule(prep_comm);
 	}
 }
