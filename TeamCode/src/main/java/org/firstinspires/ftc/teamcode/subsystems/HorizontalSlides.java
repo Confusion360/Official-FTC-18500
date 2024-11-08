@@ -39,11 +39,15 @@ public class HorizontalSlides extends SubsystemBase {
 	private final Servo leftIntHinge;
 	double rightOffset = -0.005;
 
-	//preset positions
-	double armUp;
-	double armForward;
-	double armBack;
 	double currentPos;
+
+	private double firstPos = 0.49;	  //angle 19.962
+	private double secondPos = 0.536;  // angle 31.88
+	private double thirdPos = 0.59;	  //angle 45.7
+	private double fourthPos = 0.66;  // angle 64.47
+	private double[] slidePositions = {firstPos, secondPos, thirdPos, fourthPos};
+	private int posIndex = 0;
+	private boolean out = true;
 
 	//0.63 max
 	//0.5 min, intaking pos
@@ -69,19 +73,16 @@ public class HorizontalSlides extends SubsystemBase {
 		leftSlideServo.setPosition(1-pos);
 	}
 
-	public void extendFurther() {
-		currentPos = leftSlideServo.getPosition();
-		if (currentPos > 0.5 && currentPos < 0.63) {
-			sleep(50);
-			move(currentPos+0.01);
+	public void cycleSlidePos() {
+		if (out) {
+			move(slidePositions[posIndex]);
+			posIndex++;
+		} else {
+			move(slidePositions[posIndex]);
+			posIndex--;
 		}
-	}
-
-	public void contractFurther() {
-		currentPos = leftSlideServo.getPosition();
-		if (currentPos > 0.5 && currentPos < 0.63) {
-			sleep(50);
-			move(currentPos+0.01);
+		if (posIndex == 3 || posIndex == 0) {
+			out = !out;
 		}
 	}
 

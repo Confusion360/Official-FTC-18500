@@ -62,7 +62,7 @@ public class CmdOpMode extends CommandOpMode {
 				RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
 				RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 		imu.initialize(parameters);
-		gamepad1 = new GamepadEx(super.gamepad1);	//access the gamepad1 from OpMode
+		//gamepad1 = new GamepadEx(super.gamepad1);	//access the gamepad1 from OpMode
 		gamepad2 = new GamepadEx(super.gamepad2);
 
 		//subsystem init

@@ -81,29 +81,27 @@ public class General extends LinearOpMode {
         arm.moveArm(0.6);
         hSlides.move(0.5);
         while (opModeIsActive()) {
-
-            if (!drivingOn) driving.start();
-
-            if (gamepad1.options) {     //reset yaw, but we probably wont use this since roadrunner
-                imu.resetYaw();
+            if (!drivingOn) {
+                drivingOn = true;
+                driving.start();
             }
 
-            if (gamepad1.right_trigger >= 0.2) {    // If the  button is pressed, raise the arm
+            if (gamepad1.options) { imu.resetYaw(); }
+
+            if (gamepad1.right_trigger >= 0.2) {    // intake
                 hSlides.move(0.66);
                 sleep(300);
                 //dt.update();
                 hSlides.setHingePos(0.49);
                 hSlides.intakeOn();
-            } else if (gamepad1.left_trigger >= 0.2){
+                arm.moveArm(0.839);
+                arm.moveHinge(0.43);
+            } else if (gamepad1.left_trigger >= 0.2){ //transfer
                 hSlides.intakeOff();
                 arm.release();
                 hSlides.setHingePos(0.17);
                 sleep(200);
-                //dt.update();
-                arm.moveArm(0.839);
-                arm.moveHinge(0.43);
-                sleep(250);
-                hSlides.move(0.49);
+                hSlides.move(0.48);
                 //dt.update();
                 sleep(800);
                 //dt.update();
@@ -121,7 +119,7 @@ public class General extends LinearOpMode {
                 arm.moveHinge(0.4);
                 sleep(350);
                 //dt.update();
-                arm.moveArm(0.5);
+                arm.moveArm(0.4);
                 sleep(150);
                 arm.release();
                 //dt.update();
@@ -144,6 +142,14 @@ public class General extends LinearOpMode {
                 vSlides.moveToPos(0);
                 arm.moveArm(0.52);
                 arm.moveHinge(0.45);
+            } else if (gamepad1.dpad_right) {
+                hSlides.cycleSlidePos();
+            } else if (gamepad1.y) {                            //y - hinge in top position
+                hSlides.setHingePos(0.17);
+            } else if (gamepad1.a) {                            //a - hinge ia botton position
+                hSlides.setHingePos(0.485);
+            } else if (gamepad1.b) {                            //b - hinge in some sort of middle position
+                hSlides.setHingePos(0.35);
             }
             vSlides.showPos(telemetry);
         }
