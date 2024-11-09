@@ -14,14 +14,6 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 /*
- * Arm.java Summary
- * ArmSystem - constructor
- * grab - closes claw
- * release - opens claw
- * moveArm - move arm to specified location
- * */
-
-/*
  * Stuff on config
  * claw_hinge (expansion hub 1)
  * claw (expansion hub 5)

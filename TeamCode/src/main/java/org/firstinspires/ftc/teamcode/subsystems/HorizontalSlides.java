@@ -14,15 +14,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-/*
- * HorizontalSlides.java Summary
- * HorizontalSlides - constructor
- * - move (pos) - move to pos with preset offset
- * - move (pos, offset) - move to pos with custom offset
- * - intakeOn() - turns intake on
- * - intakeOff() - turns intake off
- * - setIntakeSpeed() - set the intake speed 0-1
- * */
 
 /*
  * names on config
@@ -39,8 +30,6 @@ public class HorizontalSlides extends SubsystemBase {
 	private final Servo leftIntHinge;
 	double rightOffset = -0.005;
 
-	double currentPos;
-
 	private double firstPos = 0.49;	  //angle 19.962
 	private double secondPos = 0.536;  // angle 31.88
 	private double thirdPos = 0.59;	  //angle 45.7
@@ -49,8 +38,19 @@ public class HorizontalSlides extends SubsystemBase {
 	private int posIndex = 0;
 	private boolean out = true;
 
-	//0.63 max
-	//0.5 min, intaking pos
+
+
+	// 0.40 - entry
+	// 0.45 - 1st hover
+	// 0.48 - 2nd hover
+	// 0.39 - down
+	private double[] hingePositions = {0.40, 0.46, 0.49};
+	private int hingeIndex = 0;
+
+	//0.66 max
+	//0.49 min, intaking pos
+
+	//0.45 hover pos inside submersible
 
 	public HorizontalSlides (final HardwareMap hMap, final String rServoName, final String lServoName, final String intakeName, final String rightIntHingeName, final String leftIntHingeName) {
 		rightSlideServo = hMap.get(Servo.class, rServoName);
@@ -69,6 +69,7 @@ public class HorizontalSlides extends SubsystemBase {
 	}
 
 	public void move(double pos) {	//move to position with preset offset
+		hingeIndex = 0;
 		rightSlideServo.setPosition(pos + rightOffset);
 		leftSlideServo.setPosition(1-pos);
 	}
@@ -81,9 +82,18 @@ public class HorizontalSlides extends SubsystemBase {
 			move(slidePositions[posIndex]);
 			posIndex--;
 		}
-		if (posIndex == 3 || posIndex == 0) {
+		  if (posIndex == 3 || posIndex == 0) {
 			out = !out;
 		}
+	}
+
+	public void cycleHingePos(Arm arm) {
+		if (hingeIndex == 3) hingeIndex = 0;
+		setHingePos(hingePositions[hingeIndex]);
+		if (hingeIndex == 2) {
+			intakeOn();
+		}
+		hingeIndex++;
 	}
 
 	public void intakeOn() {	// make intake spin
@@ -97,6 +107,7 @@ public class HorizontalSlides extends SubsystemBase {
 	public void intakeEject(){intakeServo.setPower(1);} // make intake eject sample
 
 	public void setHingePos(double pos) {
+		hingeIndex = 0;
 		rightIntHinge.setPosition(pos + 0.02);
 		leftIntHinge.setPosition(pos);
 	}

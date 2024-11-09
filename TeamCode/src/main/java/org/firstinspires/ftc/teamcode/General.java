@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -26,11 +27,11 @@ public class General extends LinearOpMode {
 
     public static double armPos = 0.7;
     public static double outtakeHingePos = 0.5;
-    public static double HorizontalslideServoPos = 0.5;
+    public static double Horizontalslide = 0.5;
     public static int VerticalslidePos = 0;
     public static double intakeHingePos = 0.4;
     public static double claw = 0.5;
-    public static double intake = 0.0;
+    //public static double intake = 0.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -44,17 +45,21 @@ public class General extends LinearOpMode {
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
         GamepadEx gp2 = new GamepadEx(gamepad2);
+        GamepadEx old_gamepad = gp2;
 
         //subsystems
         Arm arm = new Arm(hardwareMap, "al", "ar","claw", "claw_hinge");//, "claw", "clawrotate");       //arm and claw
         //DriveTrain dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
         HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l","intake", "intHinge_r","intHinge_l");   //this includes intake
         VerticalSlides vSlides = new VerticalSlides(hardwareMap, "slide");
+        hSlides.setHingePos(intakeHingePos);
 
         // set start position of stuff
-        //arm.moveArm(armPos);    //change if not config
-        //hSlides.move(slideServoPos);
-        //vSlides.reduce();
+//        arm.moveArm(armPos);    //change if not config
+//        arm.moveHinge(outtakeHingePos);
+//        vSlides.moveToPos(VerticalslidePos);
+//        arm.grab(claw);
+//        hSlides.move(Horizontalslide);
 
         //hSlides max position - 0.63
         //hSlides min position - 0.5
@@ -79,8 +84,19 @@ public class General extends LinearOpMode {
         if (isStopRequested()) return;
         hSlides.setHingePos(0.2);
         arm.moveArm(0.6);
-        hSlides.move(0.5);
+        arm.moveHinge(outtakeHingePos);
+        vSlides.moveToPos(VerticalslidePos);
+        arm.grab(claw);
+
         while (opModeIsActive()) {
+
+//            hSlides.setHingePos(intakeHingePos);
+//            arm.moveArm(armPos);    //change if not config
+//            arm.moveHinge(outtakeHingePos);
+//            vSlides.moveToPos(VerticalslidePos);
+//            arm.grab(claw);
+//            hSlides.move(Horizontalslide);
+
             if (!drivingOn) {
                 drivingOn = true;
                 driving.start();
@@ -88,70 +104,69 @@ public class General extends LinearOpMode {
 
             if (gamepad1.options) { imu.resetYaw(); }
 
-            if (gamepad1.right_trigger >= 0.2) {    // intake
+            if (gamepad1.right_trigger >= 0.3) {    // HOVER, EXTEND, INTAKE OFF, ARM INTO PLACE
+                hSlides.setHingePos(0.4);
                 hSlides.move(0.66);
                 sleep(300);
-                //dt.update();
-                hSlides.setHingePos(0.49);
-                hSlides.intakeOn();
+                hSlides.intakeOff();
                 arm.moveArm(0.839);
                 arm.moveHinge(0.43);
-            } else if (gamepad1.left_trigger >= 0.2){ //transfer
+            } else if (gamepad1.right_bumper){      // INTAKE DOWN, INTAKE ON
+                hSlides.setHingePos(0.49);
+                hSlides.intakeOn();
+            }else if (gamepad1.b){  //transfer
                 hSlides.intakeOff();
                 arm.release();
                 hSlides.setHingePos(0.17);
                 sleep(200);
                 hSlides.move(0.48);
-                //dt.update();
                 sleep(800);
-                //dt.update();
                 arm.grab(1);
                 sleep(500);
                 arm.moveHinge(0.6);
-                //dt.update();
                 hSlides.move(0.6);
                 sleep(500);
-                //dt.update();
                 arm.moveArm(0.52);
                 sleep(100);
                 hSlides.move(0.51);
-            } else if (gamepad1.right_bumper) {
+            } else if (gamepad1.left_trigger >= 0.3) {     //drop sample
                 arm.moveHinge(0.4);
                 sleep(350);
-                //dt.update();
-                arm.moveArm(0.4);
+                arm.moveArm(0.52);
                 sleep(150);
                 arm.release();
-                //dt.update();
                 sleep(300);
-                //dt.update();
                 arm.moveArm(0.6);
                 vSlides.moveToPos(0);
             } else if (gp2.isDown(GamepadKeys.Button.A)) {
                 hSlides.intakeEject();
             } else if (gp2.isDown(GamepadKeys.Button.B)){
                 hSlides.intakeOff();
-            } else if (gamepad1.dpad_up) {
+            } else if (gamepad1.dpad_up) {      // EXTEND VSLIDES
                 vSlides.moveToPos(2300);
-                arm.moveHinge(0.4);
-            } else if (gamepad1.dpad_left) {
+                arm.moveArm(0.55);
+                arm.moveHinge(0.5);
+            } else if (gamepad1.dpad_left) {    // IDK WHAT THIS IS FOR
                 vSlides.moveToPos(2030);
                 arm.moveArm(0.5);
                 arm.moveHinge(0);
-            } else if (gamepad1.dpad_down) {
+            } else if (gamepad1.dpad_down) {    // CONTRACT VSLIDES
                 vSlides.moveToPos(0);
                 arm.moveArm(0.52);
                 arm.moveHinge(0.45);
-            } else if (gamepad1.dpad_right) {
-                hSlides.cycleSlidePos();
-            } else if (gamepad1.y) {                            //y - hinge in top position
+            } else if (gamepad2.y) {                            //y - hinge in top position
                 hSlides.setHingePos(0.17);
-            } else if (gamepad1.a) {                            //a - hinge ia botton position
-                hSlides.setHingePos(0.485);
-            } else if (gamepad1.b) {                            //b - hinge in some sort of middle position
-                hSlides.setHingePos(0.35);
             }
+
+            if (gp2.isDown(GamepadKeys.Button.DPAD_LEFT)) hSlides.setHingePos(0.4);
+            else if (gp2.isDown(GamepadKeys.Button.DPAD_UP)) hSlides.setHingePos(0.46);
+            else if (gp2.isDown(GamepadKeys.Button.DPAD_RIGHT)) hSlides.setHingePos(0.49);
+
+            if (gp2.isDown(GamepadKeys.Button.X)) hSlides.move(0.536);
+            else if (gp2.isDown(GamepadKeys.Button.Y)) hSlides.move(0.59);
+
             vSlides.showPos(telemetry);
+            old_gamepad = gp2;
         }
     }
 }

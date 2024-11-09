@@ -17,7 +17,7 @@ public class HorizontalSlidesOtherLength extends CommandBase {
 	@Override
 	public void initialize() {
 		//direction will be true if its extension
-		if (direction) hSlides.extendFurther();
-		else hSlides.extendFurther();
+		//if (direction) hSlides.extendFurther();
+		//else hSlides.extendFurther();
 	}
 }

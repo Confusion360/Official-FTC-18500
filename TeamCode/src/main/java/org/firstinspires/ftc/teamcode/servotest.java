@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.subsystems.HorizontalSlides;
+
 @Config
 @TeleOp
 public class servotest extends LinearOpMode {
@@ -27,8 +29,10 @@ public class servotest extends LinearOpMode {
         Servo arm_l = hardwareMap.servo.get("ar");
         Servo arm_r = hardwareMap.servo.get("al");
 
-        arm_l.setPosition(pos + 0.0);
-        arm_r.setPosition(1-pos);
+        HorizontalSlides hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l","intake", "intHinge_r","intHinge_l");   //this includes intake
+        hSlides.setHingePos(pos);
+//        arm_l.setPosition(pos + 0.0);
+//        arm_r.setPosition(1-pos);
 
         waitForStart();
 
@@ -37,9 +41,10 @@ public class servotest extends LinearOpMode {
 
 
         while (opModeIsActive()) {
+            hSlides.setHingePos(pos);
 
-            arm_l.setPosition(pos + 0.0);
-            arm_r.setPosition(1-pos);
+//            arm_l.setPosition(pos + 0.0);
+//            arm_r.setPosition(1-pos);
 
 //            if(gamepad1.a){
 //                intake.setPower(1);
