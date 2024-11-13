@@ -123,8 +123,9 @@ public class General extends LinearOpMode {
                 sleep(800);
                 arm.grab(1);
                 sleep(500);
+                hSlides.move(0.66);
+                sleep(50);
                 arm.moveHinge(0.6);
-                hSlides.move(0.6);
                 sleep(500);
                 arm.moveArm(0.52);
                 sleep(100);
