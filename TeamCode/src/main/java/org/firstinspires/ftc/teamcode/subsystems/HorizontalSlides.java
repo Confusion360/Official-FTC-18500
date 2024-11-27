@@ -25,7 +25,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class HorizontalSlides extends SubsystemBase {
 	private final Servo rightSlideServo;
 	private final Servo leftSlideServo;
-	private final CRServo intakeServo;
+	private final DcMotor intake;
 	private final Servo rightIntHinge;
 	private final Servo leftIntHinge;
 	double rightOffset = -0.005;
@@ -55,7 +55,7 @@ public class HorizontalSlides extends SubsystemBase {
 	public HorizontalSlides (final HardwareMap hMap, final String rServoName, final String lServoName, final String intakeName, final String rightIntHingeName, final String leftIntHingeName) {
 		rightSlideServo = hMap.get(Servo.class, rServoName);
 		leftSlideServo = hMap.get(Servo.class, lServoName);
-		intakeServo = hMap.get(CRServo.class, intakeName);
+		intake = hMap.get(DcMotor.class, intakeName);
 		rightIntHinge = hMap.get(Servo.class, rightIntHingeName);
 		leftIntHinge = hMap.get(Servo.class, leftIntHingeName);
 	}
@@ -97,14 +97,14 @@ public class HorizontalSlides extends SubsystemBase {
 	}
 
 	public void intakeOn() {	// make intake spin
-		intakeServo.setPower(-1);
+		intake.setPower(1);
 	}
 
 	public void intakeOff() { // make intake turn off
-		intakeServo.setPower(0);
+		intake.setPower(0);
 	}
 
-	public void intakeEject(){intakeServo.setPower(1);} // make intake eject sample
+	public void intakeEject(){intake.setPower(-1);} // make intake eject sample
 
 	public void setHingePos(double pos) {
 		hingeIndex = 0;

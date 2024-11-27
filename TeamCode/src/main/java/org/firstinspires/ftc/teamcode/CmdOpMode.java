@@ -69,7 +69,7 @@ public class CmdOpMode extends CommandOpMode {
 		arm = new Arm(hardwareMap, "al", "ar","claw", "claw_hinge");//, "claw", "clawrotate");       //arm and claw
 		//dt = new DriveTrain(imu, gamepad2, hardwareMap, "br", "bl", "fr", "fl");
 		hSlides = new HorizontalSlides(hardwareMap, "fwdslide_r", "fwdslide_l","intake", "intHinge_r","intHinge_l");   //this includes intake
-		vSlides = new VerticalSlides(hardwareMap, "slide");
+		//vSlides = new VerticalSlides(hardwareMap, "slide", gamepad1);
 
 		//command init
 		drive_comm = new DriveCommand(dt);
