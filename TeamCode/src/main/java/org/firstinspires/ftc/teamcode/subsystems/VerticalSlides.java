@@ -12,7 +12,7 @@ public class VerticalSlides extends SubsystemBase{
 	Gamepad gamepad;
 
 	int SLIDE_MIN_POSITION = 0;
-	int SLIDE_MAX_POSITION = 2338;	//calibrated on 22/10/24
+	int SLIDE_MAX_POSITION = 2300;	//calibrated on 22/10/24
 
 	public VerticalSlides (final HardwareMap hMap, final String name, final Gamepad gamepad) {
 		motor = hMap.get(DcMotor.class, name);
@@ -28,7 +28,7 @@ public class VerticalSlides extends SubsystemBase{
 	}
 
 	public void reduce () {		//reduces arm to min pos
-		motor.setTargetPosition(SLIDE_MIN_POSITION);
+		motor.setTargetPosition(0);
 		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		motor.setPower(0.5);
 	}

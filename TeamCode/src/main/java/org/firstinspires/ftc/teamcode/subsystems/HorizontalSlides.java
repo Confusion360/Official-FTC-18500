@@ -61,7 +61,7 @@ public class HorizontalSlides extends SubsystemBase {
 	}
 
 	public void extend() {
-		move(0.63);
+		move(0.66);
 	}
 
 	public void contract() {
@@ -74,17 +74,16 @@ public class HorizontalSlides extends SubsystemBase {
 		leftSlideServo.setPosition(1-pos);
 	}
 
-	public void cycleSlidePos() {
-		if (out) {
-			move(slidePositions[posIndex]);
-			posIndex++;
-		} else {
-			move(slidePositions[posIndex]);
-			posIndex--;
-		}
-		  if (posIndex == 3 || posIndex == 0) {
-			out = !out;
-		}
+	public void intakeDown() {
+		setHingePos(0.72);
+	}
+
+	public void intakeUp() {
+		setHingePos(0.4);
+	}
+
+	public void intakeHover() {
+		setHingePos(0.6);
 	}
 
 	public void cycleHingePos(Arm arm) {
